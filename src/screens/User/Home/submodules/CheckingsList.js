@@ -61,7 +61,7 @@ export default function CheckingsList({
           justifyContent: 'center',
         }}>
         <ButtonComp
-          btnText={UserCheckedIn ? 'Check in' : 'Submitted'}
+          btnText={!UserCheckedIn ? 'Check in' : 'Submitted'}
           btnTextStyle={{
             fontWeight: '600',
             fontSize: 16,

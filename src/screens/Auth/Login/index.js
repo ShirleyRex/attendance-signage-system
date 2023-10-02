@@ -10,10 +10,15 @@ import React from 'react';
 import TextInputComp from '../../../Components/Ui/TextInput';
 import {scale} from 'react-native-size-matters';
 import ButtonComp from '../../../Components/Ui/ButtonComp';
-import {showErrorAlert, showSuccessAlert} from '../../../utils/helper';
+import {
+  handleLoginWithBio,
+  showErrorAlert,
+  showSuccessAlert,
+} from '../../../utils/helper';
 import Back4AppUtility from '../../../utils/Back4AppUtility';
 import {CONSTANT, STORAGE_KEY} from '../../../utils/constant';
 import {saveToLocal} from '../../../utils/LocalStorage';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function Login({navigation}) {
   const [loading, setLoading] = React.useState(false);
@@ -109,7 +114,10 @@ export default function Login({navigation}) {
             onPress={handleRegister}
             disabled={loading}
           />
-          <Text style={styles?.BottomText}>Login in with Fingerprint</Text>
+
+          <TouchableOpacity onPress={() => handleLoginWithBio(navigation)}>
+            <Text style={styles?.BottomText}>Login in with Fingerprint</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>

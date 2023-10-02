@@ -1,10 +1,26 @@
-import {Dimensions, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React from 'react';
 import {scale} from 'react-native-size-matters';
 import ButtonComp from '../../../Components/Ui/ButtonComp';
-import { MarkIcon } from '../../../access';
+import {MarkIcon} from '../../../access';
+import {showErrorAlert} from '../../../utils/helper';
 
-export default function Message() {
+export default function Message({navigation}) {
+  const handleRegister = async () => {
+    try {
+      navigation.navigate('Login');
+    } catch (error) {
+      setLoading(false);
+      showErrorAlert('An error occurred. Please try again.');
+    }
+  };
   return (
     <ScrollView
       contentContainerStyle={{flex: 1}}
@@ -15,10 +31,15 @@ export default function Message() {
           justifyContent: 'center',
           paddingHorizontal: Dimensions?.get('screen')?.width / 6,
         }}>
-        <View style={{marginBottom: 40, alignItems:'center',}}>
+        <View style={{marginBottom: 40, alignItems: 'center'}}>
           <Image
-          source={MarkIcon}
-          style={{width:100,height:100,resizeMode:'contain',marginBottom:70}}
+            source={MarkIcon}
+            style={{
+              width: 100,
+              height: 100,
+              resizeMode: 'contain',
+              marginBottom: 70,
+            }}
           />
           <Text style={styles?.HeaderText}>Congratulations!!!</Text>
           <Text style={styles?.DescText}>
@@ -37,6 +58,7 @@ export default function Message() {
             color: 'white',
             fontWeight: '700',
           }}
+          onPress={handleRegister}
         />
       </View>
     </ScrollView>

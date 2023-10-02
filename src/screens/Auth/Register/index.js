@@ -12,11 +12,15 @@ import TextInputComp from '../../../Components/Ui/TextInput';
 import {scale} from 'react-native-size-matters';
 import ButtonComp from '../../../Components/Ui/ButtonComp';
 import Back4AppUtility from '../../../utils/Back4AppUtility';
-import {showErrorAlert, showSuccessAlert} from '../../../utils/helper';
+import {
+  initiateBiometricAuth,
+  showErrorAlert,
+  showSuccessAlert,
+} from '../../../utils/helper';
 import {CONSTANT} from '../../../utils/constant';
 
 // export default function Register() {
-const Register = ({onApplyPress, checkState, setPromoCode}) => {
+const Register = ({navigation}) => {
   const [loading, setLoading] = React.useState(false);
   const [studentId, setStudentId] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -32,9 +36,11 @@ const Register = ({onApplyPress, checkState, setPromoCode}) => {
         return;
       }
       setLoading(true);
-      const queryConditions = {
-        studentId: studentId,
-      };
+      const queryConditions = [
+        {
+          studentId: studentId,
+        },
+      ];
       const checkIfTaken = await Back4AppUtility.queryRecords(
         CONSTANT.USER_REGISTER,
         queryConditions,
@@ -50,18 +56,28 @@ const Register = ({onApplyPress, checkState, setPromoCode}) => {
         studentId: studentId,
         password: password,
       };
-
       console.log(newData, 'newData');
       const response = await Back4AppUtility.createRecord(TableClass, newData);
       console.log('Record created:', response);
 
       setLoading(false);
-      showSuccessAlert('Record Created successfully');
+      await userBiometricSignIn();
+      // showSuccessAlert('Record Created successfully');
+
+      navigation.navigate('Message');
     } catch (error) {
-      console.log(error.response.data, 'error.response.data');
+      console.log(error?.response?.data, 'error.response.data');
       console.error('Error:', error);
       setLoading(false);
       showErrorAlert('An error occurred. Please try again.');
+    }
+  };
+  const userBiometricSignIn = async () => {
+    try {
+      await initiateBiometricAuth();
+    } catch (err) {
+      console.log(err, 'err');
+      console.error(err.message);
     }
   };
 
